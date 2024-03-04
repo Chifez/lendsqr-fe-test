@@ -1,0 +1,8 @@
+$Primary-color: #39cdcc;
+$Secondary-color: #545f7d;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $Primary-color;
+}
