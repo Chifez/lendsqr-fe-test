@@ -1,33 +1,53 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import Styles from './index.module.scss';
-const TextInput = (props: {
+
+interface TextInputProps {
   label?: string;
   name: string;
-  type?: string;
+  type?: 'text' | 'password';
   placeholder: string;
   value: string;
+  onChange?: (value: string) => void;
+}
+
+const TextInput: React.FC<TextInputProps> = ({
+  label,
+  name,
+  type = 'text',
+  placeholder,
+  value,
+  onChange,
 }) => {
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [inputValue, setInputValue] = useState(value);
 
-  const { label, name, type, placeholder, value } = props;
-
-  const toggleShow = () => {
-    setShow(!show);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    // onChange(newValue);
+  };
+
   return (
     <div className={Styles.container}>
       {label && <label htmlFor={name}>{label}</label>}
       <span className={Styles.input_container}>
         <input
           name={name}
-          type={type ? type : 'text'}
+          type={showPassword ? 'text' : type}
           placeholder={placeholder}
-          value={value}
+          value={inputValue}
+          onChange={handleInputChange}
         />
         {type === 'password' && (
-          <button onClick={toggleShow}>{show ? 'SHOW' : 'HIDE'}</button>
+          <button type="button" onClick={toggleShowPassword}>
+            {showPassword ? 'HIDE' : 'SHOW'}
+          </button>
         )}
       </span>
     </div>
